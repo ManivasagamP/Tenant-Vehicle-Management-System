@@ -77,7 +77,7 @@ const VehicleDashboard = () => {
             <ul className="vehicle-dashboard">
                 {vehicles.map(vehicle => (
                     <li key={vehicle.id}>
-                        {vehicle.name} - {vehicle.type} - ${vehicle.price_per_km} per Km
+                        {vehicle.name} - {vehicle.type} - Rs{vehicle.price_per_km} per Km
                         <button onClick={() => handleEditVehicle(vehicle)}>Edit</button>
                         <button onClick={() => handleDeleteVehicle(vehicle.id)}>Delete</button>
                     </li>

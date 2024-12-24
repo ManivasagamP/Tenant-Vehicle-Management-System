@@ -6,6 +6,7 @@ const AdminDashboard = () => {
     const [tenants, setTenants] = useState([]);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [selectedTenant, setSelectedTenant] = useState(null);
 
     const fetchTenants = async () => {
@@ -15,10 +16,15 @@ const AdminDashboard = () => {
 
     const handleCreateTenant = async (e) => {
         e.preventDefault();
-        await createTenant({ name, email, password: 'defaultPassword' });
-        fetchTenants();
-        setName('');
-        setEmail('');
+        try {
+            await createTenant({ name, email, password });
+            fetchTenants();
+            setName('');
+            setEmail('');
+            setPassword('');
+        } catch (error) {
+            console.error("Error creating tenant:", error);
+        }
     };
 
     const handleUpdateTenant = async (e) => {
@@ -29,6 +35,7 @@ const AdminDashboard = () => {
             setSelectedTenant(null);
             setName('');
             setEmail('');
+            setPassword('');
         }
     };
 
@@ -53,6 +60,15 @@ const AdminDashboard = () => {
             <form className="tenant-form" onSubmit={selectedTenant ? handleUpdateTenant : handleCreateTenant}>
                 <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
                 <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                {selectedTenant ? null : (
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                )}
                 <button type="submit">{selectedTenant ? 'Update Tenant' : 'Create Tenant'}</button>
             </form>
             <ul className="tenant-form">

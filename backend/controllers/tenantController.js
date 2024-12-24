@@ -8,11 +8,12 @@ export const login = (req,res)=>{
         db.query("select * from Tenant where email=?",
             [email],
             async(error,result)=>{
-                if(!result){
-                    return res.status(404).json({message:"Tenant not found"});
+                if (error) {
+                    return res.status(500).json({ message: "Internal server error" });
                 }
-                if(error){
-                    return res.json(error.message);
+                
+                if (!result || result.length === 0) {
+                    return res.status(404).json({ message: "Tenant not found" });
                 }
                 
                 const hashedpassword = result[0].password;
